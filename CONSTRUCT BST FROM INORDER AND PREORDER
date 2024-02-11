@@ -1,0 +1,26 @@
+	class Solution {
+	public:
+	    TreeNode* helper(vector<int>&preorder,int start_pr,int end_pr,vector<int>&inorder,   
+	    int start_in,int end_in)
+	    {
+	        if(start_pr>end_pr || start_in>end_in){
+	            return NULL;
+	        }
+	        int root_val = preorder[start_pr];
+	        int idx= 0;
+	        while(inorder[idx]!=root_val){
+	            idx++;
+	        }
+	        int lst_size = idx-start_in;
+	        int rst_size = end_in-idx;
+	        TreeNode*root = new TreeNode(root_val);
+	        root->left = helper(preorder,start_pr+1,start_pr+lst_size,inorder,start_in,idx-1);
+	        root->right = helper(preorder,start_pr+lst_size+1,end_pr,inorder,idx+1,end_in);
+	        return root;
+	    } 
+	    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+	        int n = preorder.size();
+	        TreeNode* root = helper(preorder,0,n-1,inorder,0,n-1);
+	        return root;
+	    }
+};
